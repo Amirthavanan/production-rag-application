@@ -1,0 +1,7 @@
+venv/
+cleanenv/
+__pycache__/
+*.pyc
+.env
+faiss.index
+chunks.pkl

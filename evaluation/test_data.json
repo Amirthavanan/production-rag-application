@@ -1,0 +1,18 @@
+[
+    {
+        "question": "What skills does the candidate have?",
+        "ground_truth": "The candidate has skills in Python, SQL, Power BI, Tableau, and Data Analytics."
+    },
+    {
+        "question": "What internships has the candidate completed?",
+        "ground_truth": "The candidate completed a Data Analytics internship at Auto Squad Private Limited."
+    },
+    {
+        "question": "What degree has the candidate completed?",
+        "ground_truth": "The candidate completed a BCA degree and an MBA."
+    },
+    {
+        "question": "What roles is the candidate aspiring for?",
+        "ground_truth": "The candidate is aspiring for Data Analyst and Software Developer roles."
+    }
+]
