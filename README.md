@@ -22,7 +22,7 @@ A production-style Retrieval-Augmented Generation (RAG) application built using 
 
 # Architecture
 
-![Architecture](architecture.png)
+![Architecture](RAG_Architecture.png)
 
 ---
 
@@ -53,8 +53,8 @@ RAG_Project/
 ```
 ## Screenshots:
 
-## 
-<img src="">
+## UI
+![UI](UI.png)
 ##
 <img src="">
 ##
