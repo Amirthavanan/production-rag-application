@@ -22,7 +22,7 @@ A production-style Retrieval-Augmented Generation (RAG) application built using 
 
 # Architecture
 
-<img src="RAG_Architecture.png">
+<img src="Screenshots/RAG_Architecture.png">
 
 ---
 
@@ -53,12 +53,12 @@ RAG_Project/
 ```
 ## Screenshots:
 
+
 ## UI
-![UI](UI.png)
-##
-<img src="">
-##
-<img src="">
+<img src="Screenshots/UI.png">
+## Fast-API
+<img src="Screenshots/swagger.png">
+
 ## Run Backend
 
 ```bash
@@ -75,5 +75,4 @@ python -m uvicorn app.main:app
 ```bash
 streamlit run frontend.py
 ```
->>>>>>> eba1dcd778bde2d34b096e76c58ebf6222c75a61
 
