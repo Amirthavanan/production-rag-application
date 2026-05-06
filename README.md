@@ -51,14 +51,14 @@ RAG_Project/
 ├── requirements.txt
 └── README.md
 ```
-## Screenshots:
+# Screenshots:
 
-
-## UI
+## UI:
 <img src="Screenshots/UI.png">
-## Fast-API
+<br>
+## Fast-API:
 <img src="Screenshots/swagger.png">
-
+<br>
 ## Run Backend
 
 ```bash
