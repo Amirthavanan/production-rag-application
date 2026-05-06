@@ -25,7 +25,7 @@ A production-style Retrieval-Augmented Generation (RAG) system built using:
 python -m uvicorn app.main:app
 ```
 
-##Run Frontend
+## Run Frontend
 
 ```bash
 streamlit run frontend.py
