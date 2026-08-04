@@ -25,6 +25,13 @@ uploaded_files = st.sidebar.file_uploader(
     help="Upload one or more PDF files to analyze."
 )
 
+st.sidebar.markdown("---")
+st.sidebar.header("🔑 API Settings")
+user_api_key = st.sidebar.text_input("Groq API Key (Optional)", type="password", help="If not set in secrets, enter your Groq API key here (gsk_...).")
+if user_api_key:
+    os.environ["GROQ_API_KEY"] = user_api_key
+
+
 def process_uploaded_pdfs(files):
     """Extract text, chunk, embed, and index uploaded PDF files directly from memory."""
     all_chunks = []
