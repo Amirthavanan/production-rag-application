@@ -1,11 +1,13 @@
-import requests
+import os
 import json
+import streamlit as st
+from groq import Groq
 
+# Get API key from Streamlit secrets or environment variable
+GROQ_API_KEY = st.secrets.get("GROQ_API_KEY", os.getenv("GROQ_API_KEY", ""))
 
 def generate_answer(query, retrieved_chunks):
     context = ""
-
-    # Build context
     for i, chunk in enumerate(retrieved_chunks):
         context += f"""
 [Chunk {i+1}]
@@ -14,7 +16,6 @@ Page: {chunk['page']}
 Text: {chunk['text']}
 """
 
-    # Prompt
     prompt = f"""
 You are a strict assistant.
 
@@ -43,54 +44,22 @@ Question:
 {query}
 """
 
-    # Call Ollama
-    response = requests.post(
-        "http://localhost:11434/api/generate",
-        json={
-            "model": "llama3",
-            "prompt": prompt,
-            "stream": False
-        }
-    )
-
-    # Convert response safely
     try:
-        data = response.json()
+        client = Groq(api_key=GROQ_API_KEY)
+        response = client.chat.completions.create(
+            messages=[
+                {"role": "system", "content": "You output JSON only."},
+                {"role": "user", "content": prompt}
+            ],
+            model="llama-3.3-70b-versatile",
+            response_format={"type": "json_object"}
+        )
 
-        print("Answer generated successfully")
+        raw_output = response.choices[0].message.content
+        return json.loads(raw_output)
 
-        # Handle Ollama errors
-        if "response" not in data:
-            return {
-                "answer": f"Ollama error: {data}",
-                "citations": []
-            }
-
-        raw_output = data["response"]
-
-        # Try parsing JSON from model output
-        try:
-            parsed = json.loads(raw_output)
-
-            # Handle nested JSON string
-            if (
-                isinstance(parsed.get("answer"), str)
-                and parsed["answer"].strip().startswith("{")
-            ):
-                parsed = json.loads(parsed["answer"])
-
-            return parsed
-
-        except Exception as parse_error:
-            return {
-                "answer": raw_output,
-                "citations": [],
-                "error": str(parse_error)
-            }
-
-    except Exception as response_error:
+    except Exception as e:
         return {
-            "answer": "Failed to get response from Ollama",
-            "citations": [],
-            "error": str(response_error)
+            "answer": f"Error generating response: {str(e)}",
+            "citations": []
         }
