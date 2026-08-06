@@ -6,3 +6,5 @@ PyMuPDF
 groq
 requests
 python-dotenv
+torchvision
+httpx<0.28.0

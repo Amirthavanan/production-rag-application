@@ -1,6 +1,10 @@
 import os
 import json
 import streamlit as st
+from dotenv import load_dotenv
+
+# Automatically load environment variables from .env file
+load_dotenv()
 
 def get_api_keys():
     """Retrieve API keys from Streamlit secrets or environment variables."""
@@ -35,14 +39,15 @@ Text: {chunk.get('text', '')}
 """
 
     prompt = f"""
-You are a strict AI assistant answering questions based on the provided document chunks.
+You are an expert HR recruiter screening a candidate based ONLY on the provided resume chunks (the context).
 
 Rules:
-1. Answer ONLY using the provided context.
-2. Do NOT make up information.
-3. If the answer is not in the context, state "I couldn't find the answer in the provided document."
-4. Include citations (source filename and page number).
-5. Return ONLY valid JSON format.
+1. Answer ONLY using the provided context (the candidate's resume).
+2. Do NOT make up or infer information about the candidate.
+3. If the answer is not in the context, state "Not mentioned in the resume."
+4. Where relevant, give an HR-style analysis: assess skills, experience, and fit, and flag gaps or red flags.
+5. Include citations (source filename and page number) for every claim.
+6. Return ONLY valid JSON format.
 
 Output Format:
 {{
@@ -78,8 +83,9 @@ Question:
     # Try Groq API first
     if groq_key:
         try:
+            import httpx
             from groq import Groq
-            client = Groq(api_key=groq_key)
+            client = Groq(api_key=groq_key, http_client=httpx.Client())
             response = client.chat.completions.create(
                 messages=[
                     {"role": "system", "content": "You output JSON only."},
@@ -103,8 +109,9 @@ Question:
     # Fallback to OpenAI API if available
     if openai_key:
         try:
+            import httpx
             from openai import OpenAI
-            client = OpenAI(api_key=openai_key)
+            client = OpenAI(api_key=openai_key, http_client=httpx.Client())
             response = client.chat.completions.create(
                 messages=[
                     {"role": "system", "content": "You output JSON only."},
@@ -116,8 +123,18 @@ Question:
             raw_output = response.choices[0].message.content
             return json.loads(raw_output)
         except Exception as e:
+            err_str = str(e)
+            if "insufficient_quota" in err_str or "credit_balance_exhausted" in err_str or "429" in err_str:
+                return {
+                    "answer": (
+                        "⚠️ **OpenAI Quota Exceeded (429)**: The configured OpenAI API key in `.env` has run out of credits.\n\n"
+                        "💡 **Fix:** Add a free Groq API key (`GROQ_API_KEY=gsk_...`) or funded OpenAI key (`OPENAI_API_KEY=sk-...`) to your `.env` file.\n"
+                        "You can get a free Groq key at [https://console.groq.com/keys](https://console.groq.com/keys)."
+                    ),
+                    "citations": []
+                }
             return {
-                "answer": f"⚠️ **OpenAI API Error**: {str(e)}",
+                "answer": f"⚠️ **OpenAI API Error**: {err_str}",
                 "citations": []
             }
 
