@@ -5,7 +5,7 @@ A production-style Retrieval-Augmented Generation (RAG) application built using 
 
 # Demo Link
 
-<a hre="https://appuction-rag-application-6ktoydvhiteyz37o47s6j5.streamlit.app/">Link</a>
+<a href="https://appuction-rag-application-6ktoydvhiteyz37o47s6j5.streamlit.app/">Link</a>
 ---
 
 # Features
