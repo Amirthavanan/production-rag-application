@@ -3,6 +3,9 @@
 
 A production-style Retrieval-Augmented Generation (RAG) application built using FastAPI, Streamlit, Hybrid Retrieval, FAISS, BM25, Ollama, and evaluation pipelines.
 
+# Demo Link
+
+<a hre="https://appuction-rag-application-6ktoydvhiteyz37o47s6j5.streamlit.app/">Link</a>
 ---
 
 # Features
